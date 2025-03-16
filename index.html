@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Stress Management Tool for Tutors</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        .btn-primary {
+            background-color: #4CAF50;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+        .form-group label {
+            text-align: left;
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">AI Stress Management Tool</h2>
+        <p class="text-center">Answer the questions below to assess your stress level.</p>
+        
+        <div id="questionnaire">
+            <p><strong>Rate each statement from 0 (No impact) to 2 (Severe impact):</strong></p>
+            
+            <div class="form-group">
+                <label>Heavy workload affects my mental health:</label>
+                <select id="q1" class="form-control">
+                    <option value="0">0 - No impact</option>
+                    <option value="1">1 - Moderate impact</option>
+                    <option value="2">2 - Severe impact</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>I struggle with time management and deadlines:</label>
+                <select id="q2" class="form-control">
+                    <option value="0">0 - No impact</option>
+                    <option value="1">1 - Moderate impact</option>
+                    <option value="2">2 - Severe impact</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Leadership roles add pressure and stress:</label>
+                <select id="q3" class="form-control">
+                    <option value="0">0 - No impact</option>
+                    <option value="1">1 - Moderate impact</option>
+                    <option value="2">2 - Severe impact</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Student failures affect my emotional well-being:</label>
+                <select id="q4" class="form-control">
+                    <option value="0">0 - No impact</option>
+                    <option value="1">1 - Moderate impact</option>
+                    <option value="2">2 - Severe impact</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>I feel burnout and fatigue often:</label>
+                <select id="q5" class="form-control">
+                    <option value="0">0 - No impact</option>
+                    <option value="1">1 - Moderate impact</option>
+                    <option value="2">2 - Severe impact</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-primary mt-3" onclick="evaluateStress()">Submit</button>
+        </div>
+        
+        <div id="result" class="mt-4" style="display: none;">
+            <p id="resultMessage"></p>
+            <button class="btn btn-primary" id="chatButton" style="display: none;" onclick="startChat()">Chat with AI</button>
+        </div>
+        
+        <canvas id="stressChart" class="mt-4" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        function evaluateStress() {
+            let totalStress = 0;
+            for (let i = 1; i <= 5; i++) {
+                totalStress += parseInt(document.getElementById('q' + i).value);
+            }
+            
+            let resultDiv = document.getElementById('result');
+            let resultMessage = document.getElementById('resultMessage');
+            let chatButton = document.getElementById('chatButton');
+            
+            if (totalStress >= 8) {
+                resultMessage.innerHTML = "You are experiencing high stress. We recommend talking to our AI chatbot for support.";
+                chatButton.style.display = "inline-block";
+            } else if (totalStress >= 4) {
+                resultMessage.innerHTML = "You have moderate stress. Consider relaxation techniques like meditation or breathing exercises.";
+                chatButton.style.display = "none";
+            } else {
+                resultMessage.innerHTML = "You seem to have low stress. Keep maintaining a healthy lifestyle!";
+                chatButton.style.display = "none";
+            }
+            
+            resultDiv.style.display = "block";
+        }
+        
+        function startChat() {
+            window.location.href = 'https://cdn.botpress.cloud/webchat/v2.2/shareable.html?configUrl=https://files.bpcontent.cloud/2024/10/29/06/20241029063953-2JWI9H2Z.json'; // Replace with actual BootPress tutor link
+        }
+        
+        var ctx = document.getElementById('stressChart').getContext('2d');
+        var stressChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                datasets: [{
+                    label: 'Stress Level',
+                    data: [3, 5, 2, 6, 4, 7, 3],
+                    borderColor: '#4CAF50',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
